@@ -77,12 +77,11 @@ namespace IndxConsoleAppJson
                 //
 
                 var result = SearchEngine.Search(query);
-
                 if (result != null)
                 {
-                    for (int i = 0; i < result.Records.Length; i++)
+                    foreach(var rec in result.Records)
                     {
-                        var key = result.Records[i].DocumentKey;
+                        long key = rec.DocumentKey;
                         string json = SearchEngine.GetJsonDataOfKey(key); // Get JSON object
 
                         Console.WriteLine(json);
