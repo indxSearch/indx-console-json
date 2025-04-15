@@ -12,6 +12,8 @@ namespace IndxConsoleAppJson
             //
 
             SearchEngineJson SearchEngine = new SearchEngineJson();
+            // Load a license like this: new SearchEngineJson("file.license");
+            // Get a developer license on https://indx.co
 
             //
             // STREAM DATA FROM FILE AND ANALYZE JSON
@@ -128,8 +130,6 @@ namespace IndxConsoleAppJson
 
                 Console.WriteLine($"\nExact hits found: {result.TruncationIndex + 1}"); // this will be 0 if query has large typos
                 Console.WriteLine("Version: " + SearchEngine.Status.Version);
-                // Indx License information
-                Console.WriteLine("Valid license: " + SearchEngine.Status.ValidLicense + " / Expires: " + SearchEngine.Status.LicenseExpirationDate.ToShortDateString());
 
                 // Continue prompt
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
