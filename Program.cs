@@ -21,8 +21,12 @@ namespace IndxConsoleAppJson
             
             string file = "data/imdb_top10k.json";
             FileStream fstream = File.Open(file, FileMode.Open, FileAccess.Read);
-            engine.Init(fstream, out string _errorMessage);
+            ProcessMonitor initMonitor = new ProcessMonitor();
+            engine.Init(fstream, initMonitor);
+            initMonitor.WaitForCompletion();
             fstream.Close();
+            Console.WriteLine("Analyzed");
+            
 
             //
             // SETUP FIELDS
@@ -41,24 +45,30 @@ namespace IndxConsoleAppJson
             // LOAD DATA
             //
 
+            ProcessMonitor loadMonitor = new ProcessMonitor();
             fstream = File.Open(file, FileMode.Open, FileAccess.Read);
-            engine.LoadJson(fstream, out _);
+            engine.LoadJson(fstream, loadMonitor);
+            Console.WriteLine("Loaded");
+            loadMonitor.WaitForCompletion();
             fstream.Close();
+            
 
             //
             // RUN INDEXING
             //
 
-            engine.Index();
+            ProcessMonitor indexMonitor = new ProcessMonitor();
+            engine.Index(indexMonitor);
 
-            // Check progress
-            while (engine.Status.SystemState != SystemState.Ready) // Print indexing progress
+            // Check Indexing progress
+            while (indexMonitor.IsRunning) // Print indexing progress
             {
-                int progressPercent = engine.Status.IndexProgressPercent;
+                int progressPercent = indexMonitor.ProgressPercent;
                 Console.Write($"\rIndexing {progressPercent}%");
                 Thread.Sleep(50); // check every 50ms
             }
 
+            indexMonitor.WaitForCompletion();
             Console.Clear();
 
             bool continueSearch = true;
