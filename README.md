@@ -1,4 +1,4 @@
-# A C# console app for Indx Search System version 4.0 with JSON mode
+# A C# console app for Indx Search System version 4.1-ALPHA with JSON mode
 
 This is a console app to load and search with [Indx](https://indx.co) as a linked class library
 
